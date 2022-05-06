@@ -1,7 +1,7 @@
 # Typescript Framework
 This framework will include two types of classes.
-Model Classes - handle data, used to repreasent users, blog posts, images etc
-View Classes - handle html events caused by the user, like clicks and taps
+Model Classes - handle data, used to repreasent users, blog posts, images etc.
+View Classes - handle html events caused by the user, like clicks and taps.
 
 ## Composition
 In order to understand composition better, we'll be taking the Extraction Approach, which means we'll build large, complicated superclasses, then pull something reusable out of them. The User class for this Framework Project will be the first example. There are numerous challenges around this approach, which we'll address. 
@@ -12,13 +12,13 @@ Previously the User.ts class (within the Models folder) included the `on()` and 
 **User.ts**
 ```
 ...
-    on(eventName: string, callback: Callback): void { // <=== callback argument features a functional annotation
+        on = (eventName: string, callback: Callback): void => { // <=== callback argument features a functional annotation
             const handlers =  this.events[eventName] || [];
             handlers.push(callback);
             this.events[eventName] = handlers;
         }
 
-        trigger(eventName: string): void {
+        trigger = (eventName: string): void => {
             const handlers = this.events[eventName];
 
             if(!handlers || handlers.length === 0) {
@@ -110,7 +110,7 @@ This class will be responsible for the `get()` and `set()` methods. We will cut 
 
 **Attributes.ts**
 ```
-get<K extends keyof T>(key: K): T[K]  {
+get = <K extends keyof T>(key: K): T[K] =>  {
     return this.data[key];
 }
 ```
@@ -120,6 +120,7 @@ Nasty Syntax.
 * K can only ever be 'name' 'age' or 'id'
 * `key` within the argument is going to be of type K
 * we return type K within T
+* this is an arrow function in order o always bound 'this' to the instance of Attributes
 
 We will integrate it back into the user class using a constructor to initialize attributes.
 
@@ -136,6 +137,23 @@ public attributes: Attributes<UserProps>
 Now that other, more reusable classes have been extracted from our User class, we must address the issue of delegation. Currently, using these methods comes with a lot of reaching into the User class and it's corresponding counterparts, which is not what we want. We need to reimplement all of these different method making use of the instances available into class User.
 
 ### Direct Passthrough
+Simple and straightforward as long as we're using arrow functions for methods in the various classes. The `get` keyword is used to place three of our methods on `User.ts`. This allows us to use those methods without reaching into their cooresponding classes. 
+
+```
+...
+    get on() {
+        return this.events.on;
+    }
+
+    get trigger() {
+        return this.events.trigger;
+    }
+
+    get get() {
+        return this.attributes.get;
+    }
+...
+```
 
 
 ### Coordination
