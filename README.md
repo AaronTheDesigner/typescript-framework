@@ -98,6 +98,41 @@ export class Sync {
 ...
 ```
 
+We still need to remove everything related to User from this file by making Sync a generic class. We will create a HasId interface with an optional number property, add `<T extends HasId>` to the class and replace `UserProps` with `T`. User.ts will now be responisble for providing the rootUrl.
+
+**User.ts**
+```
+public sync: Sync<UserProps> = new Sync<UserProps>(rootUrl);
+```
+
+### Attributes.ts 
+This class will be responsible for the `get()` and `set()` methods. We will cut and paste methods and turn it into a generic class by replacing `UserProps` with `T`. We will need to address the union return of the get method as it does not offer maximum flexibility / reusability. In this case we will apply generics to methods. The get method will be converted to the following...
+
+**Attributes.ts**
+```
+get<K extends keyof T>(key: K): T[K]  {
+    return this.data[key];
+}
+```
+Nasty Syntax.
+`K` can only be one of the keys of `T`.
+* T will be a variable, currently only UserProps interface, therefore...
+* K can only ever be 'name' 'age' or 'id'
+* `key` within the argument is going to be of type K
+* we return type K within T
+
+We will integrate it back into the user class using a constructor to initialize attributes.
+
+**User.ts**
+```
+public attributes: Attributes<UserProps>
+
+    constructor(attrs: UserProps) {
+        this.attributes = new Attributes<UserProps>(attrs);
+    }
+```
+
+
 
 
 
