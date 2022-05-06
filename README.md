@@ -132,9 +132,13 @@ public attributes: Attributes<UserProps>
     }
 ```
 
+## Delegation
+Now that other, more reusable classes have been extracted from our User class, we must address the issue of delegation. Currently, using these methods comes with a lot of reaching into the User class and it's corresponding counterparts, which is not what we want. We need to reimplement all of these different method making use of the instances available into class User.
+
+### Direct Passthrough
 
 
-
+### Coordination
 
 
 
