@@ -74,7 +74,29 @@ These will now be extracted as smaller Eventing class and imported as a property
 8. within fetch: change `${this.get('id')}` ==> `${id}`
 9. eliminate `.then(...)` and add return
 
-**Sync.ts**
+**Sync.ts** will look like below, but we're not done
+```
+... 
+export class Sync {
+
+    constructor(public rootUrl: string) {} 
+
+    fetch(id: number): AxiosPromise {
+        return axios.get(`${this.rootUrl}/${id}`);
+    }
+
+    save( data: UserProps ): AxiosPromise {
+        const { id } = data;
+
+        if (id) {
+            return axios.put(`${this.rootUrl}/${id}`, data);
+        } else {
+            return axios.post('${this.rootUrl}', data)
+        }
+    }
+}
+...
+```
 
 
 

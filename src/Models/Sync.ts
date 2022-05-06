@@ -1,5 +1,5 @@
-import axios, { AxiosPromise, AxiosResponse } from "axios";
-import { User, UserProps } from './User'
+import axios, { AxiosPromise } from "axios";
+import { UserProps } from './User'
 
 // code here refers to properties in a different class
 
