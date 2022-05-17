@@ -139,6 +139,7 @@ Now that other, more reusable classes have been extracted from our User class, w
 ### Direct Passthrough
 Simple and straightforward as long as we're using arrow functions for methods in the various classes. The `get` keyword is used to place three of our methods on `User.ts`. This allows us to use those methods without reaching into their cooresponding classes. 
 
+**User.ts**
 ```
 ...
     get on() {
@@ -157,6 +158,7 @@ Simple and straightforward as long as we're using arrow functions for methods in
 
 
 ### Coordination
+... What?
 
 
 

@@ -4648,6 +4648,10 @@ function () {
     Object.assign(this.data, update);
   };
 
+  Attributes.prototype.getAll = function () {
+    return this.data;
+  };
+
   return Attributes;
 }();
 
@@ -4699,6 +4703,36 @@ function () {
     enumerable: false,
     configurable: true
   });
+
+  User.prototype.set = function (update) {
+    this.attributes.set(update);
+    this.events.trigger('change');
+  };
+
+  User.prototype.fetch = function () {
+    var _this = this;
+
+    var id = this.get('id');
+
+    if (typeof id !== 'number') {
+      throw new Error('Cannot fetch without an id');
+    }
+
+    this.sync.fetch(id).then(function (response) {
+      _this.set(response.data);
+    });
+  };
+
+  User.prototype.save = function () {
+    var _this = this;
+
+    this.sync.save(this.attributes.getAll()).then(function (response) {
+      _this.trigger('save');
+    }).catch(function () {
+      _this.trigger('error');
+    });
+  };
+
   return User;
 }();
 
@@ -4713,14 +4747,14 @@ Object.defineProperty(exports, "__esModule", {
 var User_1 = require("./Models/User");
 
 var user = new User_1.User({
-  name: 'another new user',
-  age: 2
+  id: 1,
+  name: 'newest name',
+  age: 82
 });
-console.log(user.get('name'));
-user.on('change', function () {
-  console.log('user was changed');
+user.on('save', function () {
+  console.log(user);
 });
-user.trigger('change');
+user.save();
 },{"./Models/User":"src/Models/User.ts"}],"../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
