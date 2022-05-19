@@ -1,12 +1,13 @@
-
+import { User } from '../models/User'
 
 export class UserForm {
 
-    constructor(public parent: Element) {}
+    constructor(public parent: Element, public model: User) {}
 
     eventsMap(): { [key: string ]: () => void } {
         return {
-            'click:button': this.onButtonClick
+            // 'click:button': this.onButtonClick,
+            'click:.set-age': this.onSetAgeClick
         }
     }
 
@@ -14,18 +15,25 @@ export class UserForm {
         console.log('Hi there');
     }
 
+    onSetAgeClick = (): void => {
+        return this.model.setRandomAge();        
+    }
+
     template(): string {
         return `
             <div>
                 <h1>User Form</h1>
+                <div>User Name: ${this.model.get('name')}</div>
+                <div>User Age: ${this.model.get('age')}</div>
                 <input />  
-                <button>click me</button>           
+                <button>click me</button>  
+                <button class="set-age">set random age</button>         
             </div>
         `
     }
 
     bindEvents(fragment: DocumentFragment): void {
-        const eventsMap = this.eventsMap
+        const eventsMap = this.eventsMap();
 
         for (let eventKey in eventsMap) {
             const [eventName, selector] = eventKey.split(':')
